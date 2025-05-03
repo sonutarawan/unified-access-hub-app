@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import Buyer from "./pages/dashboard/Buyer";
 import Seller from "./pages/dashboard/Seller";
 import Admin from "./pages/dashboard/Admin";
+import Products from "./pages/dashboard/seller/Products";
 
 // Layout Components
 import BuyerLayout from "./components/layout/BuyerLayout";
@@ -45,7 +46,7 @@ const App = () => (
             
             <Route path="/dashboard/seller" element={<SellerLayout />}>
               <Route index element={<Seller />} />
-              <Route path="products" element={<div className="p-4">Products Management</div>} />
+              <Route path="products" element={<Products />} />
               <Route path="orders" element={<div className="p-4">Orders Management</div>} />
               <Route path="profile" element={<div className="p-4">Profile Settings</div>} />
             </Route>
