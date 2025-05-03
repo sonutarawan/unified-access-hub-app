@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,11 +14,24 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Shared accent color */
+    --primary: 258 90% 74%;
+    --primary-foreground: 0 0% 100%;
 
+    /* Secondary - Neutral */
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
+
+    /* Role-specific colors */
+    --buyer: 213 94% 68%;
+    --buyer-light: 213 94% 88%;
+    --buyer-dark: 213 94% 48%;
+    --seller: 150 84% 48%;
+    --seller-light: 150 84% 68%;
+    --seller-dark: 150 84% 28%;
+    --admin: 326 86% 60%;
+    --admin-light: 326 86% 80%;
+    --admin-dark: 326 86% 40%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -30,25 +44,9 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 258 90% 74%;
 
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.8rem;
   }
 
   .dark {
@@ -61,11 +59,22 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 258 90% 74%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
+
+    /* Role-specific colors - dark mode */
+    --buyer: 213 94% 58%;
+    --buyer-light: 213 94% 78%;
+    --buyer-dark: 213 94% 38%;
+    --seller: 150 84% 38%;
+    --seller-light: 150 84% 58%;
+    --seller-dark: 150 84% 18%;
+    --admin: 326 86% 50%;
+    --admin-light: 326 86% 70%;
+    --admin-dark: 326 86% 30%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
@@ -78,15 +87,7 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --ring: 258 90% 64%;
   }
 }
 
@@ -97,5 +98,88 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+@layer components {
+  .role-card {
+    @apply flex flex-col items-center justify-center p-8 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer w-full max-w-[280px] h-[220px] border-2 mb-4 md:mb-0;
+  }
+
+  .role-card.buyer {
+    @apply border-buyer bg-gradient-to-br from-white to-buyer/10 hover:to-buyer/20;
+  }
+
+  .role-card.seller {
+    @apply border-seller bg-gradient-to-br from-white to-seller/10 hover:to-seller/20;
+  }
+
+  .role-card.admin {
+    @apply border-admin bg-gradient-to-br from-white to-admin/10 hover:to-admin/20;
+  }
+
+  .role-icon {
+    @apply w-16 h-16 mb-4 transition-transform duration-300 ease-in-out;
+  }
+
+  .role-card:hover .role-icon {
+    @apply scale-110;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-2 p-3 rounded-lg transition-colors;
+  }
+
+  .nav-item.active {
+    @apply bg-primary/10 text-primary font-medium;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Apply animations */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.staggered-item {
+  opacity: 0;
+}
+
+.staggered-item:nth-child(1) {
+  animation: fadeIn 0.4s ease-out 0.1s forwards;
+}
+
+.staggered-item:nth-child(2) {
+  animation: fadeIn 0.4s ease-out 0.2s forwards;
+}
+
+.staggered-item:nth-child(3) {
+  animation: fadeIn 0.4s ease-out 0.3s forwards;
 }

@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,15 +53,21 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Role-specific color definitions
+				buyer: {
+					DEFAULT: 'hsl(var(--buyer))',
+					light: 'hsl(var(--buyer-light))',
+					dark: 'hsl(var(--buyer-dark))',
+				},
+				seller: {
+					DEFAULT: 'hsl(var(--seller))',
+					light: 'hsl(var(--seller-light))',
+					dark: 'hsl(var(--seller-dark))',
+				},
+				admin: {
+					DEFAULT: 'hsl(var(--admin))',
+					light: 'hsl(var(--admin-light))',
+					dark: 'hsl(var(--admin-dark))',
 				}
 			},
 			borderRadius: {
