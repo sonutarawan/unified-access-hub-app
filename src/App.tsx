@@ -1,71 +1,101 @@
-
+import { useState, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
+import Today from './pages/Today';
+import BrainDump from './pages/BrainDump';
+import WeekView from './pages/WeekView';
+import EndOfDay from './pages/EndOfDay';
 
-// Pages
-import Welcome from "./pages/Welcome";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import NotFound from "./pages/NotFound";
-import Buyer from "./pages/dashboard/Buyer";
-import Seller from "./pages/dashboard/Seller";
-import Admin from "./pages/dashboard/Admin";
-import Products from "./pages/dashboard/seller/Products";
+type View = 'today' | 'braindump' | 'week' | 'endofday';
 
-// Layout Components
-import BuyerLayout from "./components/layout/BuyerLayout";
-import SellerLayout from "./components/layout/SellerLayout";
-import AdminLayout from "./components/layout/AdminLayout";
+function App() {
+  const [currentView, setCurrentView] = useState<View>('today');
+  const [showEndOfDay, setShowEndOfDay] = useState(false);
 
-const queryClient = new QueryClient();
+  // Check if it's evening and show end of day prompt
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour >= 20 && !showEndOfDay) {
+      // Show subtle prompt for end of day review
+    }
+  }, [showEndOfDay]);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+  const renderView = () => {
+    switch (currentView) {
+      case 'today':
+        return <Today onNavigate={setCurrentView} />;
+      case 'braindump':
+        return <BrainDump onBack={() => setCurrentView('today')} />;
+      case 'week':
+        return <WeekView onBack={() => setCurrentView('today')} />;
+      case 'endofday':
+        return <EndOfDay onComplete={() => setCurrentView('today')} />;
+      default:
+        return <Today onNavigate={setCurrentView} />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background font-body">
       <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Welcome />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            
-            {/* Role-specific authenticated routes */}
-            <Route path="/dashboard/buyer" element={<BuyerLayout />}>
-              <Route index element={<Buyer />} />
-              <Route path="categories" element={<div className="p-4">Categories Page</div>} />
-              <Route path="orders" element={<div className="p-4">Orders Page</div>} />
-              <Route path="profile" element={<div className="p-4">Profile Page</div>} />
-            </Route>
-            
-            <Route path="/dashboard/seller" element={<SellerLayout />}>
-              <Route index element={<Seller />} />
-              <Route path="products" element={<Products />} />
-              <Route path="orders" element={<div className="p-4">Orders Management</div>} />
-              <Route path="profile" element={<div className="p-4">Profile Settings</div>} />
-            </Route>
-            
-            <Route path="/dashboard/admin" element={<AdminLayout />}>
-              <Route index element={<Admin />} />
-              <Route path="users" element={<div className="p-4">User Management</div>} />
-              <Route path="products" element={<div className="p-4">Product Review</div>} />
-              <Route path="reports" element={<div className="p-4">Analytics & Reports</div>} />
-              <Route path="settings" element={<div className="p-4">Platform Settings</div>} />
-            </Route>
-            
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-sm border-b border-border">
+        <div className="max-w-lg mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-display font-semibold text-foreground">
+              Anchor
+            </h1>
+            <nav className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentView('today')}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  currentView === 'today' 
+                    ? 'bg-primary text-primary-foreground' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Today
+              </button>
+              <button
+                onClick={() => setCurrentView('week')}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  currentView === 'week' 
+                    ? 'bg-primary text-primary-foreground' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Week
+              </button>
+              <button
+                onClick={() => setCurrentView('endofday')}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium bg-secondary text-secondary-foreground hover:opacity-90 transition-opacity"
+              >
+                End Day
+              </button>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-lg mx-auto px-4 py-6 pb-24">
+        {renderView()}
+      </main>
+
+      {/* Floating Brain Dump Button - always visible except on brain dump page */}
+      {currentView !== 'braindump' && (
+        <button
+          onClick={() => setCurrentView('braindump')}
+          className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform completion-ring"
+          aria-label="Quick capture"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+}
 
 export default App;

@@ -1,93 +1,48 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    /* Primary - Shared accent color */
-    --primary: 258 90% 74%;
-    --primary-foreground: 0 0% 100%;
-
-    /* Secondary - Neutral */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    /* Role-specific colors */
-    --buyer: 213 94% 68%;
-    --buyer-light: 213 94% 88%;
-    --buyer-dark: 213 94% 48%;
-    --seller: 150 84% 48%;
-    --seller-light: 150 84% 68%;
-    --seller-dark: 150 84% 28%;
-    --admin: 326 86% 60%;
-    --admin-light: 326 86% 80%;
-    --admin-dark: 326 86% 40%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 258 90% 74%;
-
-    --radius: 0.8rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 258 90% 74%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    /* Role-specific colors - dark mode */
-    --buyer: 213 94% 58%;
-    --buyer-light: 213 94% 78%;
-    --buyer-dark: 213 94% 38%;
-    --seller: 150 84% 38%;
-    --seller-light: 150 84% 58%;
-    --seller-dark: 150 84% 18%;
-    --admin: 326 86% 50%;
-    --admin-light: 326 86% 70%;
-    --admin-dark: 326 86% 30%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 258 90% 64%;
+    /* Warm cream base - not stark white */
+    --background: 38 40% 96%;
+    --foreground: 28 20% 20%;
+    
+    --card: 38 40% 98%;
+    --card-foreground: 28 20% 20%;
+    
+    --popover: 38 40% 98%;
+    --popover-foreground: 28 20% 20%;
+    
+    /* Primary accent - warm sage green for completions */
+    --primary: 142 35% 45%;
+    --primary-foreground: 38 40% 98%;
+    
+    /* Secondary - warm clay */
+    --secondary: 25 50% 75%;
+    --secondary-foreground: 28 20% 20%;
+    
+    /* Category colors - subtle and distinct */
+    --kids: 35 85% 75%;
+    --meals: 15 70% 70%;
+    --house: 142 25% 75%;
+    --errands: 200 60% 75%;
+    --self: 280 40% 80%;
+    
+    --muted: 38 20% 90%;
+    --muted-foreground: 28 15% 45%;
+    
+    --accent: 25 50% 75%;
+    --accent-foreground: 28 20% 20%;
+    
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 38 40% 98%;
+    
+    --border: 38 25% 85%;
+    --input: 38 25% 85%;
+    --ring: 142 35% 45%;
+    
+    --radius: 1rem;
   }
 }
 
@@ -95,7 +50,7 @@
   * {
     @apply border-border;
   }
-
+  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -103,44 +58,69 @@
 }
 
 @layer components {
-  .role-card {
-    @apply flex flex-col items-center justify-center p-8 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer w-full max-w-[280px] h-[220px] border-2 mb-4 md:mb-0;
+  .timeline-block {
+    @apply rounded-xl shadow-sm transition-all duration-200 cursor-pointer;
   }
-
-  .role-card.buyer {
-    @apply border-buyer bg-gradient-to-br from-white to-buyer/10 hover:to-buyer/20;
+  
+  .timeline-block:hover {
+    @apply shadow-md scale-[1.02];
   }
-
-  .role-card.seller {
-    @apply border-seller bg-gradient-to-br from-white to-seller/10 hover:to-seller/20;
+  
+  .timeline-block.active {
+    @apply ring-2 ring-primary shadow-lg;
   }
-
-  .role-card.admin {
-    @apply border-admin bg-gradient-to-br from-white to-admin/10 hover:to-admin/20;
+  
+  .category-tag {
+    @apply px-2 py-0.5 rounded-full text-xs font-medium;
   }
-
-  .role-icon {
-    @apply w-16 h-16 mb-4 transition-transform duration-300 ease-in-out;
+  
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:opacity-90 active:scale-95;
   }
-
-  .role-card:hover .role-icon {
-    @apply scale-110;
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:opacity-90 active:scale-95;
   }
-
-  .nav-item {
-    @apply flex items-center gap-2 p-3 rounded-lg transition-colors;
+  
+  .card-soft {
+    @apply bg-card rounded-2xl shadow-sm border border-border/50;
   }
-
-  .nav-item.active {
-    @apply bg-primary/10 text-primary font-medium;
+  
+  .input-soft {
+    @apply bg-white/70 border border-border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all;
   }
 }
 
-/* Animation keyframes */
+/* Typography */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/fraunces/v25/jizDREFJytljwvAFCnwfKdHr.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2') format('woff2');
+}
+
+.font-display {
+  font-family: 'Fraunces', serif;
+}
+
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -150,7 +130,7 @@
 
 @keyframes scaleIn {
   from {
-    transform: scale(0.9);
+    transform: scale(0.95);
     opacity: 0;
   }
   to {
@@ -159,27 +139,44 @@
   }
 }
 
-/* Apply animations */
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(77, 154, 95, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(77, 154, 95, 0);
+  }
+}
+
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.3s ease-out forwards;
+  animation: scaleIn 0.25s ease-out forwards;
 }
 
-.staggered-item {
-  opacity: 0;
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+
+/* Completion animation */
+.completion-ring {
+  animation: pulse-glow 1.5s ease-out;
 }
 
-.staggered-item:nth-child(1) {
-  animation: fadeIn 0.4s ease-out 0.1s forwards;
-}
-
-.staggered-item:nth-child(2) {
-  animation: fadeIn 0.4s ease-out 0.2s forwards;
-}
-
-.staggered-item:nth-child(3) {
-  animation: fadeIn 0.4s ease-out 0.3s forwards;
+/* Timer progress */
+.timer-progress {
+  transition: stroke-dashoffset 1s linear;
 }
